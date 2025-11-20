@@ -168,3 +168,38 @@
 .card-actions button {
   padding: 6px 10px;
 }
+
+/* Filter */
+
+.filters-section {
+  margin: 20px 0;
+  padding: 20px;
+  background: #f4f4f4;
+  border-radius: 10px;
+}
+
+.filters-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.filters-form input,
+.filters-form select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.filters-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #333;
+  color: #fff;
+}
+
+.filters-form button:hover {
+  background: #555;
+}
