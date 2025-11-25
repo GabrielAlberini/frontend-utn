@@ -15,11 +15,12 @@ const Home = () => {
     maxPrice: 0
   })
 
-  const { user } = useAuth()
+  // { id: '6925fe9645e9b029b62ac797', iat: 1764101665, exp: 1764105265 }
+  const { user, token } = useAuth()
 
   const fetchingProducts = async (query = "") => {
     try {
-      const response = await fetch(`https://backend-utn.onrender.com/products?${query}`, {
+      const response = await fetch(`http://localhost:3000/products?${query}`, {
         method: "GET"
       })
       const dataProducts = await response.json()
@@ -39,10 +40,18 @@ const Home = () => {
     }
 
     try {
-      const response = await fetch(`https://backend-utn.onrender.com/products/${idProduct}`, {
-        method: "DELETE"
+      const response = await fetch(`http://localhost:3000/products/${idProduct}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       })
       const dataResponse = await response.json()
+
+      if (dataResponse.error) {
+        alert(dataResponse.error)
+        return
+      }
 
       setProducts(products.filter((p) => p._id !== idProduct))
 
@@ -93,7 +102,7 @@ const Home = () => {
 
       <section className="page-section">
         <p>
-          Bienvenido a nuestra tienda. Aquí encontrarás una amplia variedad de productos diseñados para satisfacer
+          Bienvenido {user && user.id} a nuestra tienda. Aquí encontrarás una amplia variedad de productos diseñados para satisfacer
           tus necesidades. Nuestro compromiso es ofrecer calidad y confianza.
         </p>
       </section>
@@ -119,7 +128,7 @@ const Home = () => {
             onChange={handleChange}
             value={filters.category}
           >
-            <option selected>Todas las categorias</option>
+            <option defaultValue>Todas las categorias</option>
             {
               CATEGORIES.map((category) =>
                 <option key={category.id}

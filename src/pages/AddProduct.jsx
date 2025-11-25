@@ -1,5 +1,7 @@
 import { useState } from "react"
 import Layout from "../components/Layout"
+import { useAuth } from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,10 @@ const AddProduct = () => {
     category: ""
   })
 
+  const navigate = useNavigate()
+
+  const { token } = useAuth()
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -19,11 +25,14 @@ const AddProduct = () => {
       stock: Number(formData.stock),
     }
 
+    console.log(token)
+
     try {
-      const response = await fetch(`https://backend-utn.onrender.com/products`, {
+      const response = await fetch(`http://localhost:3000/products`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(dataToSend)
       })
@@ -41,6 +50,7 @@ const AddProduct = () => {
         stock: "",
         category: ""
       })
+      navigate("/")
     } catch (error) {
 
     }

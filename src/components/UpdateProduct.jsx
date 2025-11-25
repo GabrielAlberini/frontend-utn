@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useAuth } from "../context/AuthContext"
 
 const UpdateProduct = ({ product, onClose, onUpdate }) => {
   const [loader, setLoader] = useState(false)
@@ -9,6 +10,8 @@ const UpdateProduct = ({ product, onClose, onUpdate }) => {
     price: Number(product.price),
     category: product.category
   })
+
+  const { token } = useAuth()
 
   const handleChange = (e) => {
     setFormData({
@@ -28,10 +31,11 @@ const UpdateProduct = ({ product, onClose, onUpdate }) => {
 
     try {
       setLoader(true)
-      const response = await fetch(`https://backend-utn.onrender.com/products/${product._id}`, {
+      const response = await fetch(`http://localhost:3000/products/${product._id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(dataToUpdate)
       })
